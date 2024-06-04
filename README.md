@@ -1,5 +1,8 @@
 # Movie Recommendation System using Machine Learning
 
+## Deployed in Streamlit -> (https://movies-recommender-systems.streamlit.app)
+
+
 ![background](https://github.com/Rhariharan08/Movie-Recommender-System/assets/171643933/aba21540-5db1-4822-aabd-3386967fac23)
 
 ## Description
