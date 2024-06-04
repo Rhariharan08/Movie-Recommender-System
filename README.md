@@ -1,5 +1,5 @@
 # Movie Recommendation System using Machine Learning
-![background](https://github.com/Rhariharan2003/Movie-Recommendation-System/assets/136108485/c11e3835-10bd-4d0f-9221-67920969bdfa)
+
 
 
 ## Description
@@ -20,7 +20,8 @@ The objective of this project is to create a customized movie recommendation sys
  <br />
 
  
-## Data Preprocessing
+## Data Preprocessing![background](https://github.com/Rhariharan08/Movie-Recommender-System/assets/171643933/0a554a8c-7ac1-4c8a-8f60-67257f5bd4bd)
+
 The dataset is preprocessed in multiple stages before being used for recommendation generation.
 
 **Data collection** involves merging new data that was collected from Wikipedia with historical data from Kaggle.
