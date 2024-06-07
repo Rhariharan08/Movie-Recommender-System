@@ -17,9 +17,11 @@ The objective of this project is to create a customized movie recommendation sys
 
  <br />
   <br />
+  
 **Features**: Genres, movie titles, and more metadata.
  <br />
   <br />
+  
 **APIs Utilized**: TMDBv3 to retrieve movie details and genres.
  <br />
 
