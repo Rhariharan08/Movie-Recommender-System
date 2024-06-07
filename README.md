@@ -6,22 +6,19 @@
 ![background](https://github.com/Rhariharan08/Movie-Recommender-System/assets/171643933/aba21540-5db1-4822-aabd-3386967fac23)
 
 ## Description
-This project uses machine learning models to construct a content-based movie recommendation system. Users can recommend movies to the system using their feedback. For data from 1886 to 2017, it utilizes a Kaggle dataset; for data from 2018 to 2023, it uses web scraping techniques from Wikipedia. The TMDBv3 API is used by the project to retrieve movie data and genres. Recommendations are generated using cosine similarity and TF-IDF vectorizer. The system is set up as an application called Streamlit.
+This project uses machine learning models to construct a content-based movie recommendation system. Users can recommend movies to the system using their feedback. For data from 1886 to 2017, it utilizes a Kaggle dataset; for data from 2018 to 2023, it uses web scraping techniques from Wikipedia. The TMDBv3 API is used by the project to retrieve movie data and genres. Recommendations are generated using cosine similarity and Auto vectorizer from Transformers. The system is set up as an application called Streamlit.
 
 
 ## Introduction
-The objective of this project is to create a customized movie recommendation system that improves user experience by making recommendations for films that suit user preferences and tastes. The system can make movie recommendations based on content similarity by utilizing cosine similarity and TF-IDF vectorization.
+The objective of this project is to create a customized movie recommendation system that improves user experience by making recommendations for films that suit user preferences and tastes. The system can make movie recommendations based on content similarity by utilizing cosine similarity and Auto vectorization.
 
 ## Dataset
 **Sources**: Wikipedia (2018–2023) and Kaggle (1886–2017).
-
  <br />
-  <br />
-  
+ <br />
 **Features**: Genres, movie titles, and more metadata.
  <br />
-  <br />
-  
+ <br />
 **APIs Utilized**: TMDBv3 to retrieve movie details and genres.
  <br />
 
@@ -43,7 +40,7 @@ The dataset is preprocessed in multiple stages before being used for recommendat
 ## Model
 The recommendation system uses a content-based filtering approach:
 
-**TF-IDF Vectorizer**: Converts movie descriptions into numerical vectors.
+**Auto Vectorizer**: Converts movie descriptions into numerical vectors.
  <br />
   <br />
 **Cosine Similarity**: Measures similarity between movie vectors to recommend similar movies.
