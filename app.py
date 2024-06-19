@@ -9,7 +9,7 @@ def fetch_movie_details(movie_name):
     api_key = "8265bd1679663a7ea12ac168da84d2e8"
     search_url = "https://api.themoviedb.org/3/search/movie"
     movie_url = "https://api.themoviedb.org/3/movie"
-    poster_base_url = "https://image.tmdb.org/t/p/w500"
+    poster_base_url = "https://image.tmdb.org/t/p/w200"  # Reduced size for posters
 
     search_params = {
         'api_key': api_key,
@@ -48,7 +48,7 @@ def recommend(movie):
     distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
     recommended_movie_names = []
     recommended_movie_details = []
-    for i in distances[1:6]:  # Limiting to 5 recommended movies
+    for i in distances[1:4]:  # Limiting to 3 recommended movies
         movie_name = movies.iloc[i[0]].movie_title
         details = fetch_movie_details(movie_name)
         recommended_movie_names.append(str(movie_name).capitalize())
@@ -59,8 +59,10 @@ def recommend(movie):
 # Load movies and similarity data
 @st.cache_data
 def load_data():
-    movies = pickle.load(open('movie_list.pkl', 'rb'))
-    similarity = pickle.load(open('similarity.pkl', 'rb'))
+    with open('movie_list.pkl', 'rb') as f:
+        movies = pickle.load(f)
+    with open('similarity.pkl', 'rb') as f:
+        similarity = pickle.load(f)
     return movies, similarity
 
 movies, similarity = load_data()
