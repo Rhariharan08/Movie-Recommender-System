@@ -1,10 +1,10 @@
 import pickle
 import streamlit as st
 import requests
-import base64
 from PIL import Image
 
 # Function to fetch movie poster and details
+@st.cache_data
 def fetch_movie_details(movie_name):
     api_key = "8265bd1679663a7ea12ac168da84d2e8"
     search_url = "https://api.themoviedb.org/3/search/movie"
@@ -42,12 +42,13 @@ def fetch_movie_details(movie_name):
         return "Movie not found", "N/A", "N/A", "N/A", "N/A", "N/A"
 
 # Recommendation function
+@st.cache_data
 def recommend(movie):
     index = movies[movies['movie_title'] == movie].index[0]
     distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
     recommended_movie_names = []
     recommended_movie_details = []
-    for i in distances[1:10]:  # Displaying 8 recommended movies
+    for i in distances[1:6]:  # Limiting to 5 recommended movies
         movie_name = movies.iloc[i[0]].movie_title
         details = fetch_movie_details(movie_name)
         recommended_movie_names.append(str(movie_name).capitalize())
@@ -55,21 +56,17 @@ def recommend(movie):
 
     return recommended_movie_names, recommended_movie_details
 
-im = Image.open("—Pngtree—movie element movie icon_4380477.png")
-st.set_page_config(
-    page_title="Movie Recommender System",
-    page_icon=im,
-    layout="wide",
-    initial_sidebar_state="expanded",
-
-)
-
-
 # Load movies and similarity data
-movies = pickle.load(open('movie_list.pkl', 'rb'))
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+@st.cache_data
+def load_data():
+    movies = pickle.load(open('movie_list.pkl', 'rb'))
+    similarity = pickle.load(open('similarity.pkl', 'rb'))
+    return movies, similarity
+
+movies, similarity = load_data()
 movie_list = movies['movie_title'].values
 
+# Background function
 def add_bg_from_local():
     st.markdown(
         f"""
@@ -83,9 +80,18 @@ def add_bg_from_local():
         unsafe_allow_html=True
     )
 
+# Main app setup
+im = Image.open("—Pngtree—movie element movie icon_4380477.png")
+st.set_page_config(
+    page_title="Movie Recommender System",
+    page_icon=im,
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
 add_bg_from_local()
 
-# Streamlit app layout
+# Custom CSS
 custom_css = """
 <style>
     .title {
@@ -95,88 +101,80 @@ custom_css = """
     }
     .instructions {
         font-family: 'Times New Roman', Times, serif;
-        font-size:20px;
+        font-size: 20px;
         font-weight: bold;
         color: black;
+    }
+    .movie-container {
+        background-color: #fafafa;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        text-align: center;
+        height: 650px;
+        width: 100%;
+    }
+    .movie-container:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+    .movie-container img {
+        border-radius: 10px;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        max-height: 300px;
+    }
+    .movie-name {
+        background-color: #2dfd37;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 24px;
+        color: black;
+        font-weight: bold;
+        margin: 10px 0 5px 0;
+    }
+    .release-date, .rating, .genres, .director, .actors {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 5px;
+    }
+    .director, .rating, .actors {
+        background-color: #f0f0f0;
+        padding: 5px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+    .genres {
+        color: #4CAF50; /* Green color for genres */
+    }
+    .director {
+        color: #2196F3; /* Blue color for director */
+    }
+    .rating {
+        color: #FF9800; /* Orange color for rating */
+    }
+    .actors {
+        color: #9C27B0; /* Purple color for actors */
     }
 </style>
 """
 
-# Apply custom CSS
 st.markdown(custom_css, unsafe_allow_html=True)
 
-# Title and instructions with custom styling
+# Title and instructions
 st.markdown('<h1 class="title">🎬 Movie Recommender System Using Machine Learning 🎥</h1>', unsafe_allow_html=True)
 st.markdown('<p class="instructions">**Select a movie and get recommendations:**</p>', unsafe_allow_html=True)
+
+# Movie selection
 selected_movie = st.selectbox("Type or select a movie", movie_list, key="selected_movie")
 
-
+# Show recommendations
 if st.button('Show Recommendation', key="recommend_button"):
     recommended_movie_names, recommended_movie_details = recommend(selected_movie)
 
-    # Custom CSS for styling
-    st.markdown(
-        """
-        <style>
-        .movie-container {
-            background-color: #fafafa;
-            padding: 15px;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            text-align: center;
-            height: 650px;
-            width: 100%;
-        }
-        .movie-container:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-        .movie-container img {
-            border-radius: 10px;
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            max-height: 300px;
-        }
-        .movie-name {
-            background-color:#2dfd37;
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 24px;
-            color:black;
-            font-weight: bold;
-            margin: 10px 0 5px 0;
-        }
-        .release-date, .rating, .genres, .director, .actors {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        .director, .rating, .actors {
-            background-color: #f0f0f0;
-            padding: 5px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        .genres {
-            color: #4CAF50; /* Green color for genres */
-        }
-        .director {
-            color: #2196F3; /* Blue color for director */
-        }
-        .rating {
-            color: #FF9800; /* Orange color for rating */
-        }
-        .actors {
-            color: #9C27B0; /* Purple color for actors */
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # Display recommended movies in three columns
+    # Display recommended movies
     cols = st.columns(3)
     for i in range(len(recommended_movie_names)):
         name, details = recommended_movie_names[i], recommended_movie_details[i]
